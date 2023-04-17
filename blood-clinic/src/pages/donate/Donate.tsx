@@ -1,11 +1,11 @@
 function Donate() {
-  return (
-    <div>
-      <span className="flex items-center justify-center text-7xl">
+    return (
+        <div>
+            <span className="flex items-center justify-center text-7xl">
         Donation works!
-      </span>
-    </div>
-  );
+            </span>
+        </div>
+    );
 }
 
 export default Donate;

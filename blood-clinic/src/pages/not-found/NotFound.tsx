@@ -1,14 +1,14 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 function NotFound() {
-  const location = useLocation();
-  return (
-    <div>
-      <span className="flex items-center justify-center text-7xl">
+    const location = useLocation();
+    return (
+        <div>
+            <span className="flex items-center justify-center text-7xl">
         Sorry, the page {location.pathname} could not be found.
-      </span>
-    </div>
-  );
+            </span>
+        </div>
+    );
 }
 
 export default NotFound;
