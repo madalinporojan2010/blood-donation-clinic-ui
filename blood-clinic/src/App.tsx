@@ -8,6 +8,7 @@ import Home from './pages/home/Home';
 import NotFound from './pages/not-found/NotFound';
 
 function App() {
+
     useEffect(() => {
         document.title = APP_TITLE;
     }, []);
