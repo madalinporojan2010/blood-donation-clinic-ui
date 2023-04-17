@@ -35,15 +35,15 @@ function NavBar(props: NavBarProps) {
 
     return (
         <div>
-            <nav className="bg-white border-gray-200 dark:bg-gray-900">
-                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <nav className="border-gray-200 bg-white dark:bg-gray-900">
+                <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
                     <a
                         href={props.pages[0].link}
                         className="flex items-center [&>span>:last-child]:hover:text-blue-700"
                     >
-                        <LogoSVG className="logo h-8 mr-3"></LogoSVG>
-                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                            <span className="font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-blue-700">
+                        <LogoSVG className="mr-3 h-8"></LogoSVG>
+                        <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
+                            <span className="bg-gradient-to-r from-red-600 to-blue-700 bg-clip-text font-extrabold text-transparent">
                 hema
                             </span>
                             <span>.care</span>
@@ -52,13 +52,13 @@ function NavBar(props: NavBarProps) {
                     <button
                         data-collapse-toggle="navbar-default"
                         type="button"
-                        className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        className="ml-3 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
                         aria-controls="navbar-default"
                         aria-expanded="false"
                     >
                         <span className="sr-only">Open main menu</span>
                         <svg
-                            className="w-6 h-6"
+                            className="h-6 w-6"
                             aria-hidden="true"
                             fill="currentColor"
                             viewBox="0 0 20 20"
@@ -72,7 +72,7 @@ function NavBar(props: NavBarProps) {
                         </svg>
                     </button>
                     <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-                        <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                        <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900">
                             {setPages(props.pages)}
                         </ul>
                     </div>

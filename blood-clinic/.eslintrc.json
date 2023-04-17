@@ -8,9 +8,18 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:react/jsx-runtime",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:tailwindcss/recommended"
     ],
     "overrides": [
+        {
+            "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+            "parser": "@typescript-eslint/parser"
+        },
+        {
+          "files": ["*.html"],
+          "parser": "@angular-eslint/template-parser"
+        }
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -75,6 +84,24 @@
           // Components used as alternatives to <a> for linking, eg. <Link to={ url } />
           "Hyperlink",
           {"name": "Link", "linkAttribute": "to"}
-        ]
+        ],
+        "tailwindcss": {
+            // These are the default values but feel free to customize
+            "callees": ["classnames", "clsx", "ctl"],
+            "config": "tailwind.config.js",
+            "cssFiles": [
+              "**/*.css",
+              "!**/node_modules",
+              "!**/.*",
+              "!**/dist",
+              "!**/build"
+            ],
+            "cssFilesRefreshRate": 5000,
+            "removeDuplicates": true,
+            "skipClassAttribute": false,
+            "whitelist": [],
+            "tags": [],
+            "classRegex": "^class(Name)?$" // can be modified to support custom attributes. E.g. "^tw$" for `twin.macro`
+          }
       }
 }
