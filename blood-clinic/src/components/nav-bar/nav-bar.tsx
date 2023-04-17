@@ -1,30 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavBarProps, Page } from "./nav-bar-types";
 import { ReactComponent as LogoSVG } from "../../assets/icons/logo-icon.svg";
-
+import { useLocation, useNavigate } from "react-router-dom";
 function NavBar(props: NavBarProps) {
-  const [currentPage, setCurrentPage] = useState(props.pages[0]);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const setPages = (pages: Page[], currentPage: Page) => {
+  const setPages = (pages: Page[]) => {
     const highlightCurrentPage = (page: Page) => {
-      if (currentPage.name.includes(page.name)) {
-        return "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500";
+      const linkRegEx = new RegExp(`${page.link}$`);
+      const margins = "block py-2 pl-3 pr-4";
+      if (linkRegEx.test(location.pathname)) {
+        return `${margins} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500`;
       } else {
-        return "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent";
+        return `${margins} text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`;
       }
     };
 
     return pages.map((page) => (
       <li key={page.name}>
-        <a
+        <button
+          type="button"
           onClick={() => {
-            setCurrentPage(page);
+            if (!page.name.includes("sign in")) {
+              navigate(page.link);
+            }
           }}
-          href={page.link}
           className={highlightCurrentPage(page)}
         >
           {page.name}
-        </a>
+        </button>
       </li>
     ));
   };
@@ -69,7 +74,7 @@ function NavBar(props: NavBarProps) {
           </button>
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              {setPages(props.pages, currentPage)}
+              {setPages(props.pages)}
             </ul>
           </div>
         </div>

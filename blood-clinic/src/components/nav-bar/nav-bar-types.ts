@@ -1,8 +1,8 @@
 export interface NavBarProps {
-    pages: Page[]
+  pages: Page[];
 }
 
 export interface Page {
-    name: string,
-    link: string
+  name: string;
+  link: string;
 }
