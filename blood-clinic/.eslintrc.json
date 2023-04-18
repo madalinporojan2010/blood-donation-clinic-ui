@@ -47,6 +47,7 @@
             "error",
             "always"
         ],
+        "comma-dangle": "error",
         "no-console": "error"
     },
     "settings": {
