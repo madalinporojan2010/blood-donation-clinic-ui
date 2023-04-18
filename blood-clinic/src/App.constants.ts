@@ -20,14 +20,6 @@ const company: FooterContent = {
         {
             title: 'Careers',
             link: ''
-        },
-        {
-            title: 'Brand Center',
-            link: ''
-        },
-        {
-            title: 'Blog',
-            link: ''
         }
     ]
 };
@@ -37,15 +29,15 @@ const helpCenter: FooterContent = {
     contents: [
         {
             title: 'Twitter',
-            link: ''
+            link: 'https://twitter.com/'
         },
         {
             title: 'Facebook',
-            link: ''
+            link: 'https://facebook.com/'
         },
         {
             title: 'Contact Us',
-            link: ''
+            link: '/contact'
         }
     ]
 };
@@ -62,7 +54,7 @@ const legal: FooterContent = {
             link: ''
         },
         {
-            title: 'Terms &amp; Conditions',
+            title: 'Terms & Conditions',
             link: ''
         }
     ]
@@ -71,10 +63,10 @@ const legal: FooterContent = {
 export const FOOTER_PROPS: FooterProps = {
     copyrightTitle: 'Hemacare™',
     copyrightYear: 2023,
-    facebookLink: '',
-    instagramLink: '',
-    twitterLink: '',
-    gitHubLink: '',
+    facebookLink: 'https://facebook.com/',
+    instagramLink: 'https://instagram.com/',
+    twitterLink: 'https://twitter.com/',
+    gitHubLink: 'https://github.com/madalinporojan2010',
     footerContents: [
         company,
         helpCenter,
