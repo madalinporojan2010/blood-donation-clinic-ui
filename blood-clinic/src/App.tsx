@@ -6,6 +6,7 @@ import Contact from './pages/contact/Contact';
 import Donate from './pages/donate/Donate';
 import Home from './pages/home/Home';
 import NotFound from './pages/not-found/NotFound';
+import SignIn from './pages/sign-in/SignIn';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/donate" element={<Donate />} />
                         <Route path="/contact" element={<Contact />} />
+                        <Route path="/sign-in" element={<SignIn />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </div>
