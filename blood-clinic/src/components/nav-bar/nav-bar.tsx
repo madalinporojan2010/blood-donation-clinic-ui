@@ -1,4 +1,4 @@
-import { CSSProperties, useLayoutEffect, useRef } from 'react';
+import { CSSProperties, useEffect, useLayoutEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as LogoSVG } from '../../assets/icons/logo-icon.svg';
 
@@ -30,13 +30,18 @@ function NavBar(props: NavBarProps) {
     // mobile main menu
     const [mobileMenuOpened, mobileMenuFuncs] = useMobileMainMenuStatus(false);
 
+    function updatePadding() {
+        document.documentElement.style.setProperty('--navBar-padding', `${(elementRef.current?.clientHeight || 0)}px`);
+    }
+    
     useLayoutEffect(() => {
-        function updatePadding() {
-            document.documentElement.style.setProperty('--navBar-padding', `${(elementRef.current?.clientHeight || 0)}px`);
-        }
         window.addEventListener('resize', updatePadding);
         updatePadding();
     }, []);
+
+    useEffect(() => {
+        updatePadding();
+    }, [mobileMenuOpened]);
 
     const setPages = (pages: Page[]) => {
         const highlightCurrentPage = (page: Page) => {
@@ -88,6 +93,10 @@ function NavBar(props: NavBarProps) {
         return {strokeDasharray: '60 31 60 300'};
     };
 
+    const onMobileMenuClick = () => {
+        (mobileMenuFuncs as MainMenuHookFunc).setToggle();
+    };
+
     return (
         <section>
             <nav ref={elementRef} className="fixed left-0 top-0 z-20 w-full border-b border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-900">
@@ -107,10 +116,10 @@ function NavBar(props: NavBarProps) {
                     <button
                         data-collapse-toggle="navbar-default"
                         type="button"
-                        className="ml-3 inline-flex items-center overflow-hidden rounded-lg  p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
+                        className="ml-3 inline-flex items-center overflow-hidden rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
                         aria-controls="navbar-default"
                         aria-expanded={mobileMenuOpened as boolean}
-                        onClick={(mobileMenuFuncs as MainMenuHookFunc).setToggle}
+                        onClick={onMobileMenuClick}
                     >
                         <span className="sr-only">Open main menu</span>
                         <svg stroke="currentColor" fill="none" className={`${svgMobileMainMenuState()} transition-transform duration-1000`} viewBox="-10 -10 120 120" height="35" >
