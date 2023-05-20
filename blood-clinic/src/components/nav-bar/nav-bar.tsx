@@ -97,11 +97,11 @@ function NavBar(props: NavBarProps) {
                         className="flex items-center [&>span>:last-child]:hover:text-blue-700"
                     >
                         <LogoSVG className="mr-3 h-8 [&>.cls-1]:fill-red-700 [&>.cls-1]:dark:fill-[url(#gradient1)]"></LogoSVG>
-                        <span className="inline-block animate-[glitch_1s_linear_infinite] self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
-                            <span title="hema" className="bg-gradient-to-r from-red-600 to-blue-700 bg-clip-text font-extrabold text-transparent before:absolute before:left-0 before:bg-gradient-to-r before:from-red-600 before:to-blue-700 before:bg-clip-text before:content-[attr(title)] ">
+                        <span className="inline-block self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
+                            <span title="hema" className="bg-gradient-to-r from-red-600 to-blue-700 bg-clip-text font-extrabold text-transparent">
                 hema
                             </span>
-                            <span title=".care" className='after:absolute after:left-0 after:bg-gradient-to-r after:bg-clip-text after:text-red-600 after:content-[attr(title)]'>.care</span>
+                            <span>.care</span>
                         </span>
                     </a>
                     <button
@@ -113,20 +113,6 @@ function NavBar(props: NavBarProps) {
                         onClick={(mobileMenuFuncs as MainMenuHookFunc).setToggle}
                     >
                         <span className="sr-only">Open main menu</span>
-                        {/* <svg
-                            className="h-6 w-6"
-                            aria-hidden={!(mobileMenuOpened as boolean)}
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                                clipRule="evenodd"
-                            ></path>
-                        </svg> */}
-
                         <svg stroke="currentColor" fill="none" className={`${svgMobileMainMenuState()} transition-transform duration-1000`} viewBox="-10 -10 120 120" height="35" >
                             
                             <path className="duration-1000" style={pathSvgMobileMenuState()} strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" d="m 20 40 h 60 a 1 1 0 0 1 0 20 h -60 a 1 1 0 0 1 0 -40 h 30 v 70">

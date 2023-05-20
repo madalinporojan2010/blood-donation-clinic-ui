@@ -5,24 +5,34 @@ export const content = ['./src/**/*.{js,jsx,ts,tsx}'];
 export const theme = {
   extend: {
     colors: {
-      primary: { "50": "#eff6ff", "100": "#dbeafe", "200": "#bfdbfe", "300": "#93c5fd", "400": "#60a5fa", "500": "#3b82f6", "600": "#2563eb", "700": "#1d4ed8", "800": "#1e40af", "900": "#1e3a8a" }
+      primary: {
+        "50": "#eff6ff",
+        "100": "#dbeafe",
+        "200": "#bfdbfe",
+        "300": "#93c5fd",
+        "400": "#60a5fa",
+        "500": "#3b82f6",
+        "600": "#2563eb",
+        "700": "#1d4ed8",
+        "800": "#1e40af",
+        "900": "#1e3a8a"
+      }
     },
     keyframes: {
-      glitch: {
-        '2%, 64%': {
-          transform: 'translate(2px,0) skew(0deg)',
+      pulse: {
+        "0%": {
+          "transform": "scale(0.8)",
+          "box-shadow": "0 0 0 0 rgba(229, 62, 62, 1)",
         },
-        '4%, 60%': {
-          transform: 'translate(-2px,0) skew(0deg)',
+        "70%": {
+          "transform": "scale(1)",
+          "box-shadow": "0 0 0 60px rgba(229, 62, 62, 0)",
         },
-        '62%': {
-          transform: 'translate(0,0) skew(5deg)',
+        "100%": {
+          "transform": "scale(0.8)",
         }
       }
     },
-    animation: {
-      glitch: 'glitch 1s linear infinite',
-    }
   },
   fontFamily: {
     'body': [

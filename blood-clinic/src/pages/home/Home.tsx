@@ -1,3 +1,4 @@
+import { ReactComponent as DropSVG } from '../../assets/icons/drop-icon.svg';
 import Card from '../../components/card/card';
 import { CardProps } from '../../components/card/card-types';
 import { CARDS } from './Home-constants';
@@ -34,8 +35,23 @@ function Home() {
                     </figure>
                 </div>
             </section>
+
             <div className='px-10 md:flex md:flex-row md:justify-center md:gap-7'>
                 {renderCards(CARDS)}
+            </div>
+
+            <div className="w-full border-0 border-gray-200 bg-white p-4 text-center shadow dark:border-gray-700 dark:bg-gray-800 sm:p-8">
+                <h5 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Want to contribute to millions of lives?</h5>
+                <p className="mb-5 text-base text-gray-500 dark:text-gray-400 sm:text-lg">Make an appointment anytime, any day of the week.<br/> By participating to our programme, you can also donate to any charity with just a click!</p>
+                <div className="items-center justify-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+                    <a href="donate" className="inline-flex w-full items-center justify-center rounded-lg bg-gray-800 px-4 py-2.5 text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 sm:w-auto">
+                        <DropSVG className="mr-3 h-8 [&>.cls-1]:fill-red-700 [&>.cls-1]:dark:fill-[url(#gradient1)]"></DropSVG>
+                        <div className="text-left">
+                            <div className="mb-1 text-xs">Make an appointment</div>
+                            <div className="-mt-1 font-sans text-sm font-semibold">Click for more info</div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     );
