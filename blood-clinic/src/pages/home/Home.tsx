@@ -9,7 +9,7 @@ function Home() {
     }
 
     return (
-        <div>
+        <section>
             <section className="h-full bg-white dark:bg-gray-900">
                 <div className="mx-auto max-w-screen-md px-4 py-8 lg:py-16">
                     <h2 className="mb-4 text-center text-4xl text-gray-900 dark:text-white">
@@ -53,7 +53,7 @@ function Home() {
                     </a>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
 

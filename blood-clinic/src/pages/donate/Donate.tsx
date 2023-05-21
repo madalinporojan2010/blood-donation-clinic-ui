@@ -5,9 +5,6 @@ import TimePicker from '../../components/time-picker/time-picker';
 import { BLOOD_TYPES, DATE_PICKER_OPTS } from './Donate-constants';
 
 function Donate() {
-
-    const [startDate, setStartDate] = useState(new Date());
-    const [value, onChange] = useState('10:00');
     const [show, setShow] = useState<boolean>(false);
     const handleChange = (selectedDate: Date) => {
         // eslint-disable-next-line no-console
@@ -18,10 +15,16 @@ function Donate() {
     };
     return (
         <section>
-            <span className="mt-10 flex items-center justify-center text-center text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-                
-            </span>
-            <div className="mt-20 flex justify-center">
+            <div className="mx-auto max-w-screen-md px-4 pt-8 lg:py-16">
+                <h2 className="text-center text-4xl text-gray-900 dark:text-white">
+                    <span className="bg-gradient-to-r from-red-600 to-blue-800 bg-clip-text font-medium tracking-tighter text-transparent"> 
+                        <span className="font-bold"> 
+                        Schedule Your Appointment
+                        </span>
+                    </span>
+                </h2>
+            </div>
+            <div className="mt-16 flex justify-center">
                 <form className="w-4/5">
 
                     <div className="grid md:grid-cols-2 md:gap-6">
@@ -83,7 +86,7 @@ function Donate() {
                         <div className="group relative z-0 mb-6 w-full">
                             <Datepicker options={DATE_PICKER_OPTS} onChange={handleChange} show={show} setShow={handleClose}></Datepicker>
                         </div>
-                        <div className="group relative z-0 mb-6 w-full">
+                        <div className="group relative z-0 mb-6 self-center justify-self-end md:justify-self-start">
                             <TimePicker></TimePicker>
                         </div>
                     </div>
