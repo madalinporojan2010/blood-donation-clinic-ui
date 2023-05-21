@@ -85,11 +85,11 @@ function Donate() {
                         </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 md:gap-6">
-                        <div className="group relative z-0 mb-6 w-full">
+                    <div className="grid md:grid-cols-2  md:gap-6 ">
+                        <div className="group relative z-[1] mb-6 w-full">
                             <Datepicker options={DATE_PICKER_OPTS} onChange={handleChange} show={show} setShow={handleClose}></Datepicker>
                         </div>
-                        <div className="group relative z-0 mb-6 self-center justify-self-end md:justify-self-start">
+                        <div className=" group relative z-0 mb-6 self-center justify-self-end md:justify-self-start">
                             <TimePicker></TimePicker>
                         </div>
                     </div>
