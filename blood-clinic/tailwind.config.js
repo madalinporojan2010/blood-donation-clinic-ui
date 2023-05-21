@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 export const darkMode = 'media';
-export const content = ['./src/**/*.{js,jsx,ts,tsx}'];
+export const content = ['./src/**/*.{js,jsx,ts,tsx}', "./node_modules/tailwind-datepicker-react/dist/**/*.js",];
 export const theme = {
   extend: {
     colors: {

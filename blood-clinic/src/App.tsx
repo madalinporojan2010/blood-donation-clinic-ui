@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { FOOTER_PROPS, PAGES } from './App.constants';
 import Footer from './components/footer/footer';

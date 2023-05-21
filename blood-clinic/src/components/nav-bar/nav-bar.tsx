@@ -41,7 +41,7 @@ function NavBar(props: NavBarProps) {
 
     useEffect(() => {
         updatePadding();
-    }, [mobileMenuOpened]);
+    }, [mobileMenuOpened, mobileMenuFuncs]);
 
     const setPages = (pages: Page[]) => {
         const highlightCurrentPage = (page: Page) => {
