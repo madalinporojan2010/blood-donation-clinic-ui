@@ -1,21 +1,37 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Datepicker from 'tailwind-datepicker-react';
 import TimePicker from '../../components/time-picker/time-picker';
-import { BLOOD_TYPES, DATE_PICKER_OPTS, DEFAULT_PATIENT_DATA } from './Donate-constants';
-import { BloodType, FormProps } from './Donate-types';
+import { DATE_PICKER_OPTS, DEFAULT_PATIENT_DATA } from './Donate-constants';
+import { BLOOD_TYPES, FormProps } from './Donate-types';
+import { IPatient } from './services/patient/patient-types';
+import savePatient from './services/patient/savePatient';
 
 function Donate() {
     const [patientData, setPatientData] = useState<FormProps>(DEFAULT_PATIENT_DATA);
+    const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
-    useEffect(() => {
+    const [showCharityMessage, setShowCharityMessage] = useState<boolean>(false);
+
+    const schedule = () => {
         // eslint-disable-next-line no-console
         console.log(patientData);
-    }, [patientData]);
+        setShowCharityMessage(true);
 
-    const [show, setShow] = useState<boolean>(false);
+        savePatient({
+            name: patientData.FullName,
+            age: patientData.Age,
+            address: patientData.FullAddress,
+            phone: patientData.PhoneNumber,
+            cnp: patientData.CNP,
+            contactPersonName: patientData.EmergencyContactFullName,
+            contactPersonPhone: patientData.EmergencyContactPhoneNumber,
+            bloodType: patientData.BloodType !== undefined ? {id: patientData.BloodType} : null
+        // eslint-disable-next-line no-console
+        } as IPatient, (savedPatient)=> {console.log(savedPatient);});
+    };
     const handleClose = (state: boolean) => {
-        setShow(state);
+        setShowDatePicker(state);
     };
 
     const handleFullNameChange = (name: string) => {
@@ -42,12 +58,10 @@ function Donate() {
         setPatientData(newData);
     };
 
-    const bloodTypeRegex = new RegExp('[-+]$');
-
-    const handleBloodTypeChange = (bloodType: string) => {
+    const handleBloodTypeChange = (bloodType: number) => {
         const newData: FormProps = {...patientData};
-        if(bloodTypeRegex.test(bloodType)) {
-            newData.BloodType = bloodType as BloodType;
+        if(bloodType > 0) {
+            newData.BloodType = +bloodType;
         } else {
             newData.BloodType = undefined;
         }
@@ -102,7 +116,7 @@ function Donate() {
                 </h2>
             </div>
             <div className="mt-16 flex justify-center">
-                <form className="w-4/5">
+                <form className="w-4/5" onSubmit={(event) => {schedule();event.preventDefault();}} method="post">
 
                     <div className="grid md:grid-cols-2 md:gap-6">
                         <div className="group relative z-0 mb-6 w-full">
@@ -128,10 +142,10 @@ function Donate() {
 
                         <div>
                             <div className="group relative z-0 mb-6 w-full">
-                                <select id="blood_type" defaultValue="Choose your Blood Type" onChange={(event) => handleBloodTypeChange(event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
-                                    <option>Choose your Blood Type</option>
-                                    <option>Don&apos;t know</option>
-                                    {BLOOD_TYPES.map((type: string) => (<option key={type}>{type}</option>))}
+                                <select id="blood_type" defaultValue="Choose your Blood Type" onChange={(event) => handleBloodTypeChange(+event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
+                                    <option value={-1}>Choose your Blood Type</option>
+                                    <option value={-2}>Don&apos;t know</option>
+                                    {Array.from(BLOOD_TYPES).map(([key, value]) => (<option key={value} value={value}>{key}</option>))}
                                 </select>
                                 <label htmlFor="blood_type" className="sr-only">Underline select</label>
                             </div>
@@ -156,7 +170,7 @@ function Donate() {
 
                     <div className="grid md:grid-cols-2  md:gap-6 ">
                         <div className="group relative z-[1] mb-6 w-full">
-                            <Datepicker options={DATE_PICKER_OPTS} onChange={handleDateChange} show={show} setShow={handleClose}></Datepicker>
+                            <Datepicker options={DATE_PICKER_OPTS} onChange={handleDateChange} show={showDatePicker} setShow={handleClose}></Datepicker>
                         </div>
                         <div className=" group relative z-0 mb-6 self-center justify-self-end md:justify-self-start">
                             <TimePicker onChange={handleTimeChange}></TimePicker>
