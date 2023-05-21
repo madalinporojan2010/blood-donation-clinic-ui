@@ -4,8 +4,8 @@ import { DEFAULT_HOUR_PICKS, DEFAULT_MIN_PICKS } from './time-picker-constants';
 
 function TimePicker() {
     return (
-        <section className="">
-            <div className="h-full rounded-lg border border-gray-600 p-1 shadow-xl dark:bg-gray-700 dark:text-gray-50">
+        <section>
+            <div className="h-full rounded-lg border border-gray-600 p-1 shadow-xl dark:bg-gray-700 dark:text-gray-50 md:p-2">
                 
                 <div className="flex gap-2">
                     <AccessTimeIcon></AccessTimeIcon>
