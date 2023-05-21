@@ -1,18 +1,92 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Datepicker from 'tailwind-datepicker-react';
 import TimePicker from '../../components/time-picker/time-picker';
-import { BLOOD_TYPES, DATE_PICKER_OPTS } from './Donate-constants';
+import { BLOOD_TYPES, DATE_PICKER_OPTS, DEFAULT_PATIENT_DATA } from './Donate-constants';
+import { BloodType, FormProps } from './Donate-types';
 
 function Donate() {
-    const [show, setShow] = useState<boolean>(false);
-    const handleChange = (selectedDate: Date) => {
+    const [patientData, setPatientData] = useState<FormProps>(DEFAULT_PATIENT_DATA);
+
+    useEffect(() => {
         // eslint-disable-next-line no-console
-        console.log(selectedDate);
-    };
+        console.log(patientData);
+    }, [patientData]);
+
+    const [show, setShow] = useState<boolean>(false);
     const handleClose = (state: boolean) => {
         setShow(state);
     };
+
+    const handleFullNameChange = (name: string) => {
+        const newData: FormProps = {...patientData};
+        newData.FullName = name;
+        setPatientData(newData);
+    };
+
+    const handlePhoneNumberChange = (phone: string) => {
+        const newData: FormProps = {...patientData};
+        newData.PhoneNumber = phone;
+        setPatientData(newData);
+    };
+
+    const handleAgeChange = (age: number) => {
+        const newData: FormProps = {...patientData};
+        newData.Age = age;
+        setPatientData(newData);
+    };
+
+    const handleCNPChange = (cnp: string) => {
+        const newData: FormProps = {...patientData};
+        newData.CNP = cnp;
+        setPatientData(newData);
+    };
+
+    const bloodTypeRegex = new RegExp('[-+]$');
+
+    const handleBloodTypeChange = (bloodType: string) => {
+        const newData: FormProps = {...patientData};
+        if(bloodTypeRegex.test(bloodType)) {
+            newData.BloodType = bloodType as BloodType;
+        } else {
+            newData.BloodType = undefined;
+        }
+        setPatientData(newData);
+    };
+
+    const handleAddressChange = (address: string) => {
+        const newData: FormProps = {...patientData};
+        newData.FullAddress = address;
+        setPatientData(newData);
+    };
+
+    const handleEmergencyFullName = (name: string) => {
+        const newData: FormProps = {...patientData};
+        newData.EmergencyContactFullName = name;
+        setPatientData(newData);
+    };
+
+    const handleEmergencyPhoneNumber = (number: string) => {
+        const newData: FormProps = {...patientData};
+        newData.EmergencyContactPhoneNumber = number;
+        setPatientData(newData);
+    };
+
+    const handleDateChange = (selectedDate: Date) => {
+        const newData: FormProps = {...patientData};
+        newData.ScheduleDate.setFullYear(selectedDate.getFullYear());
+        newData.ScheduleDate.setMonth(selectedDate.getMonth());
+        newData.ScheduleDate.setDate(selectedDate.getDate());
+
+        setPatientData(newData);
+    };
+    
+    const handleTimeChange = (hour: number , min: number) => {
+        const newData: FormProps = {...patientData};
+        newData.ScheduleDate.setHours(hour, min, 0);
+        setPatientData(newData);
+    };
+
     return (
         <section>
             <div className="mx-auto max-w-screen-md px-4 pt-8 lg:py-16">
@@ -32,34 +106,29 @@ function Donate() {
 
                     <div className="grid md:grid-cols-2 md:gap-6">
                         <div className="group relative z-0 mb-6 w-full">
-                            <input type="text" name="floating_full_name" id="floating_full_name" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
+                            <input type="text" name="floating_full_name" onChange={(event) => handleFullNameChange(event.target.value)} id="floating_full_name" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
                             <label htmlFor="floating_full_name" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Full name</label>
                         </div>
                         <div className="group relative z-0 mb-6 w-full">
-                            <input type="tel" pattern="[0-9]{10}" name="floating_phone" id="floating_phone" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
+                            <input type="tel" pattern="[0-9]{10}" name="floating_phone" onChange={(event) => handlePhoneNumberChange(event.target.value)} id="floating_phone" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
                             <label htmlFor="floating_phone" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Phone number</label>
                         </div>
                     </div>
 
                     <div className="group relative z-0 mb-6 w-full">
-                        <input type="email" name="floating_email" id="floating_email" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
-                        <label htmlFor="floating_email" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Email address</label>
-                    </div>
-
-                    <div className="group relative z-0 mb-6 w-full">
-                        <input type="number" inputMode="numeric" pattern="[0-9]+" min="15" max="99" name="floating_age" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
+                        <input type="number" inputMode="numeric" pattern="[0-9]+" onChange={(event) => handleAgeChange(+event.target.value)} min="15" max="99" name="floating_age" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
                         <label htmlFor="floating_age" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Age</label>
                     </div>
 
                     <div className="grid md:grid-cols-2 md:gap-6">
                         <div className="group relative z-0 mb-6 w-full">
-                            <input type="number" inputMode="numeric" pattern="[0-9]{13}" name="floating_cnp" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
+                            <input type="number" inputMode="numeric" pattern="[0-9]{13}" onChange={(event) => handleCNPChange(event.target.value)} name="floating_cnp" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
                             <label htmlFor="floating_cnp" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">CNP</label>
                         </div>
 
                         <div>
                             <div className="group relative z-0 mb-6 w-full">
-                                <select id="blood_type" defaultValue="Choose your Blood Type" className="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
+                                <select id="blood_type" defaultValue="Choose your Blood Type" onChange={(event) => handleBloodTypeChange(event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
                                     <option>Choose your Blood Type</option>
                                     <option>Don&apos;t know</option>
                                     {BLOOD_TYPES.map((type: string) => (<option key={type}>{type}</option>))}
@@ -70,32 +139,30 @@ function Donate() {
                     </div>
 
                     <div className="group relative z-0 mb-6 w-full">
-                        <input type="text" name="floating_address" id="floating_address" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
+                        <input type="text" name="floating_address" id="floating_address" onChange={(event) => handleAddressChange(event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
                         <label htmlFor="floating_address" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Full Address</label>
                     </div>
 
                     <div className="grid md:grid-cols-2 md:gap-6">
                         <div className="group relative z-0 mb-6 w-full">
-                            <input type="text" name="floating_contact_full_name" id="floating_contact_full_name" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
+                            <input type="text" name="floating_contact_full_name" id="floating_contact_full_name" onChange={(event) => handleEmergencyFullName(event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
                             <label htmlFor="floating_contact_full_name" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Emergency Contact Full Name</label>
                         </div>
                         <div className="group relative z-0 mb-6 w-full">
-                            <input type="tel" pattern="[0-9]{10}" name="floating_contact_phone" id="floating_contact_phone" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
+                            <input type="tel" pattern="[0-9]{10}" name="floating_contact_phone" id="floating_contact_phone" onChange={(event) => handleEmergencyPhoneNumber(event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
                             <label htmlFor="floating_contact_phone" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Emergency Contact Phone number</label>
                         </div>
                     </div>
 
                     <div className="grid md:grid-cols-2  md:gap-6 ">
                         <div className="group relative z-[1] mb-6 w-full">
-                            <Datepicker options={DATE_PICKER_OPTS} onChange={handleChange} show={show} setShow={handleClose}></Datepicker>
+                            <Datepicker options={DATE_PICKER_OPTS} onChange={handleDateChange} show={show} setShow={handleClose}></Datepicker>
                         </div>
                         <div className=" group relative z-0 mb-6 self-center justify-self-end md:justify-self-start">
-                            <TimePicker></TimePicker>
+                            <TimePicker onChange={handleTimeChange}></TimePicker>
                         </div>
                     </div>
                     <button type="submit" className="mt-5 w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Schedule</button>
-
-
                 </form>
             </div>
         </section>

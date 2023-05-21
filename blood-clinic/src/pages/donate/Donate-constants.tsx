@@ -1,5 +1,6 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { BloodType, FormProps } from './Donate-types';
 
 const today = new Date();
 const tomorrow = new Date();
@@ -35,7 +36,7 @@ export const DATE_PICKER_OPTS = {
     language: 'en'
 };
 
-export const BLOOD_TYPES = [
+export const BLOOD_TYPES: BloodType[] = [
     'A-',
     'A+',
     'B-',
@@ -45,3 +46,15 @@ export const BLOOD_TYPES = [
     'AB-',
     'AB+'
 ];
+
+export const DEFAULT_PATIENT_DATA: FormProps = {
+    FullName: '',
+    PhoneNumber: '',
+    Age: 0,
+    CNP: '',
+    BloodType: undefined,
+    FullAddress: '',
+    EmergencyContactFullName: '',
+    EmergencyContactPhoneNumber: '',
+    ScheduleDate: tomorrow
+};
