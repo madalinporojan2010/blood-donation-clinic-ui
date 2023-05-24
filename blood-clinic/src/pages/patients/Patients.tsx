@@ -90,7 +90,9 @@ export default function Patients() {
                 <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
                     <caption className="bg-white p-5 text-left text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white">
             Our patients
-                        <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse the list of our clinic future or old patients. Make sure that you update their blood type if it is not set already.</p>
+                        <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+                            Browse the list of our clinic future or old patients. Make sure that you update their blood type if it is not set already.
+                        </p>
                     </caption>
                     <thead className=" bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
