@@ -5,7 +5,7 @@ import getMedicalStaff from '../../shared/services/medical-staff/medicalStaff';
 import { IMedicalStaff } from '../../shared/services/medical-staff/medicalStaff-types';
 import { DEFAULT_MESSAGE } from '../../shared/shared-constants';
 import { Message } from '../../shared/shared-types';
-import { DEFAULT_SIGNIN_DATA, ERROR_MESSAGES, INFO_MESSAGES } from './SignIn-constants';
+import { DEFAULT_SIGNIN_DATA, ERROR_MESSAGES, INFO_MESSAGES, PATIENTS_PAGE_PATH } from './SignIn-constants';
 import { FormProps } from './SignIn-types';
 
 function SignIn() {
@@ -51,7 +51,7 @@ function SignIn() {
             }) ? true : false;
             
             if(access) {
-                navigate('/');
+                navigate(PATIENTS_PAGE_PATH);
             } else {
                 const newMessage = {...message};
                 newMessage.message = INFO_MESSAGES.SIGN_IN;

@@ -13,3 +13,5 @@ export const DEFAULT_SIGNIN_DATA: FormProps = {
     idNumber: '',
     password: ''
 };
+
+export const PATIENTS_PAGE_PATH = '/patients';
