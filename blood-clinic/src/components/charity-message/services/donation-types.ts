@@ -1,4 +1,4 @@
-import { IMedicalStaff } from '../../../pages/donate/services/medical-staff/medical-staff-types';
+import { IMedicalStaff } from '../../../shared/services/medical-staff/medicalStaff-types';
 
 export interface IDonation {
     id: number;
