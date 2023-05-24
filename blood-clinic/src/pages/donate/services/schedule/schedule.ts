@@ -10,5 +10,5 @@ export default function saveSchedule(schedule: ISchedule, callback: (message: st
             callback(null);
         }
         
-    }).catch();
+    }).catch(() => callback(null));
 }

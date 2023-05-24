@@ -1,4 +1,3 @@
-import { MessageType } from '../../components/message-box/message-box-types';
 
 export interface FormProps {
     FullName: string;
@@ -13,8 +12,3 @@ export interface FormProps {
     MedicalStaff: number | undefined;
 }
 
-export interface Message {
-    message: string;
-    type: MessageType;
-    show: boolean;
-}

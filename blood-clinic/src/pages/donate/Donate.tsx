@@ -1,11 +1,13 @@
 
 import { useEffect, useState } from 'react';
 import Datepicker from 'tailwind-datepicker-react';
+import CharityMessage from '../../components/charity-message/charity-message';
 import MessageBox from '../../components/message-box/message-box';
 import TimePicker from '../../components/time-picker/time-picker';
-import { RESPONSE_MESSAGES } from '../../shared/shared-constants';
-import { DATE_PICKER_OPTS, DEFAULT_MESSAGE, DEFAULT_PATIENT_DATA, ERROR_MESSAGES, INFO_MESSAGES } from './Donate-constants';
-import { FormProps, Message } from './Donate-types';
+import { DEFAULT_MESSAGE, RESPONSE_MESSAGES } from '../../shared/shared-constants';
+import { Message } from '../../shared/shared-types';
+import { DATE_PICKER_OPTS, DEFAULT_PATIENT_DATA, ERROR_MESSAGES, INFO_MESSAGES } from './Donate-constants';
+import { FormProps } from './Donate-types';
 import getBloodTypes from './services/bloodType/bloodType';
 import { IMedicalStaff } from './services/medical-staff/medical-staff-types';
 import getMedicalStaff from './services/medical-staff/medicalStaff';
@@ -59,9 +61,13 @@ function Donate() {
 
     const renderInfoMessageComponent = () => {
         if(message.show) {
-            const newMessage = {...message};
-            newMessage.show = false;
             return (<MessageBox message={message.message} messageType={message.type} onClose={()=>{closeMessage();}}></MessageBox>);
+        }
+    };
+    
+    const renderCharityMessageComponent = () => {
+        if(showCharityMessage) {
+            return (<CharityMessage></CharityMessage>);
         }
     };
 
@@ -277,10 +283,14 @@ function Donate() {
                     <div className='flex justify-center md:justify-start'>
                         {renderInfoMessageComponent()}
                     </div>
-
                     <button type="submit" className="mt-5 w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Schedule</button>
                 </form>
             </div>
+
+            <div className='mt-10'>
+                {renderCharityMessageComponent()}
+            </div>
+
         </section>
     );
 }
