@@ -86,7 +86,8 @@ function Donate() {
                 saveSchedule({
                     patient: {id: savedPatient?.id},
                     medicalStaff: {id: patientData.MedicalStaff},
-                    arrivalTime: patientData.ScheduleDate
+                    arrivalTime: patientData.ScheduleDate,
+                    bloodType: {id: patientData.BloodType}
                 } as ISchedule, (message: string | null) => {                    
                     if(message === null || !message.includes(RESPONSE_MESSAGES.SUCCESS)) {
                         setMessage({
