@@ -8,13 +8,13 @@ import getMedicalStaff from '../../shared/services/medical-staff/medicalStaff';
 import { IMedicalStaff } from '../../shared/services/medical-staff/medicalStaff-types';
 import { savePatient } from '../../shared/services/patient/patient';
 import { IBloodType, IPatient } from '../../shared/services/patient/patient-types';
+import { saveSchedule } from '../../shared/services/schedule/schedule';
+import { ISchedule } from '../../shared/services/schedule/schedule-types';
 import { DEFAULT_MESSAGE, RESPONSE_MESSAGES } from '../../shared/shared-constants';
 import { Message } from '../../shared/shared-types';
 import { DATE_PICKER_OPTS, DEFAULT_PATIENT_DATA, ERROR_MESSAGES, INFO_MESSAGES } from './Donate-constants';
 import { FormProps } from './Donate-types';
 import getBloodTypes from './services/bloodType/bloodType';
-import saveSchedule from './services/schedule/schedule';
-import { ISchedule } from './services/schedule/schedule-types';
 
 function Donate() {
     const [patientData, setPatientData] = useState<FormProps>(DEFAULT_PATIENT_DATA);
