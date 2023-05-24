@@ -1,3 +1,4 @@
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import useIsMobile from '../../hooks/is-mobile/is-mobile-hook';
 import { getPatients } from '../../shared/services/patient/patient';
@@ -72,7 +73,21 @@ export default function Patients() {
                         {patient.contactPersonPhone}
                     </td>
                     <th scope="row" className={`${cellPadding} font-medium text-gray-900 dark:text-white`}>
-                        {patient.bloodType?.bloodType ?? 'Doesn\'t know'}
+                        <div className="relative flex justify-center gap-3">
+                            {patient.bloodType?.bloodType ?? 'Doesn\'t know'}
+
+                            
+                            <select id="blood_type" defaultValue="Choose your Blood Type" className="peer absolute right-0 z-10 block h-full w-full cursor-pointer appearance-none border-0 border-b-2 border-gray-200 bg-transparent text-sm text-gray-500 opacity-0  focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
+                                <option value={-1}>Doesn&apos;t know</option>
+                            </select>
+
+                            <div id="alert-1" className='flex rounded-lg bg-blue-50 text-base font-bold text-blue-800 dark:bg-gray-800 dark:text-blue-400' role="alert">
+                                <button type="button" className={'-ml-2 inline-flex h-8 w-8 rounded-lg bg-blue-50 text-blue-800 focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-blue-400'} data-dismiss-target="#alert-1" aria-label="Close">
+                                    <span className="sr-only">Close</span>
+                                    <ArrowDropDownIcon></ArrowDropDownIcon>
+                                </button>
+                            </div>
+                        </div>
                     </th>
                     <th scope="row" className={`${cellPadding} font-medium text-gray-900 dark:text-white`}>
                         {fetchedSchedules?.find((schedule: ISchedule) => {
