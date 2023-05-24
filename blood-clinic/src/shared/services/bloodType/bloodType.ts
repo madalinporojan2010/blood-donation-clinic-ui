@@ -1,6 +1,6 @@
 
 import axios, { HttpStatusCode } from 'axios';
-import { API, ENDPOINTS } from '../../../../shared/shared-constants';
+import { API, ENDPOINTS } from '../../shared-constants';
 import { IBloodType } from './bloodTypes-types';
 
 export default function getBloodTypes(callback: (bloodTypes: IBloodType[] | null) => void) {

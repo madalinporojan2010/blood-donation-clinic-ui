@@ -13,10 +13,10 @@ export function savePatient(patient: IPatient, callback: (patient: IPatient | nu
     }).catch();
 }
 
-export function updatePatient(patient: IPatient, callback: (patient: IPatient | null) => void) {
+export function updatePatient(patient: IPatient, callback: (message: string | null) => void) {
     axios.put(`${API}/${ENDPOINTS.PATIENT_ENDPOINT}`, {patient: patient}).then((response) => {
         if(response.status === HttpStatusCode.Ok && response.data) {
-            callback(response.data.entity);
+            callback(response.data.message);
         } else {
             callback(null);
         }

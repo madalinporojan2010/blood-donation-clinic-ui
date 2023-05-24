@@ -1,10 +1,13 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import useIsMobile from '../../hooks/is-mobile/is-mobile-hook';
-import { getPatients } from '../../shared/services/patient/patient';
+import getBloodTypes from '../../shared/services/bloodType/bloodType';
+import { IBloodType } from '../../shared/services/bloodType/bloodTypes-types';
+import { getPatients, updatePatient } from '../../shared/services/patient/patient';
 import { IPatient } from '../../shared/services/patient/patient-types';
 import { getSchedules } from '../../shared/services/schedule/schedule';
 import { ISchedule } from '../../shared/services/schedule/schedule-types';
+import { RESPONSE_MESSAGES } from '../../shared/shared-constants';
 import { CELL_PADDING, MOBILE_CELL_PADDING, MOBILE_TABLE_COLUMNS, TABLE_COLUMNS } from './Patients-constants';
 
 export default function Patients() {
@@ -12,18 +15,28 @@ export default function Patients() {
     
     const [fetchedPatients, setFetchedPatients] = useState<IPatient[]>();
     const [fetchedSchedules, setFetchedSchedules] = useState<ISchedule[]>();
+    const [fetchedBloodTypes, setFetchedBloodTypes] = useState<IBloodType[]>();
     
     const [cellPadding, setCellPadding] = useState<string>(CELL_PADDING);
 
-    useEffect(() => {
+    const fetchPatients = () => {
         getPatients((patients: IPatient[] | null) => {
             if(patients) {
                 setFetchedPatients(patients);
             }
         });
+    };
+
+    useEffect(() => {
+        fetchPatients();
         getSchedules((schedules: ISchedule[] | null) => {
             if(schedules) {
                 setFetchedSchedules(schedules);
+            }
+        });
+        getBloodTypes((bloodTypes: IBloodType[] | null) => {
+            if(bloodTypes) {
+                setFetchedBloodTypes(bloodTypes);
             }
         });
     }, []);
@@ -42,6 +55,25 @@ export default function Patients() {
         }
 
         return TABLE_COLUMNS.map((column: string) => <th key={column} scope="col" className={`${cellPadding}`}>{column}</th>);
+    };
+
+    const handleBloodTypeChange = (bloodTypeID: number, patientID: number) => {
+        const patient = fetchedPatients?.find((patient: IPatient) => patient.id === patientID);
+        if(patient) {
+            if(bloodTypeID < 0) {
+                patient.bloodType = null;
+            } else if(patient.bloodType) {
+                patient.bloodType.id = bloodTypeID;
+            } else {
+                patient.bloodType = {id: bloodTypeID};
+            }
+
+            updatePatient(patient, (message: string | null) => {
+                if(message !== null && message.includes(RESPONSE_MESSAGES.SUCCESS)) {
+                    fetchPatients();
+                }
+            });
+        }
     };
 
     const tableRows = () => {
@@ -76,9 +108,9 @@ export default function Patients() {
                         <div className="relative flex justify-center gap-3">
                             {patient.bloodType?.bloodType ?? 'Doesn\'t know'}
 
-                            
-                            <select id="blood_type" defaultValue="Choose your Blood Type" className="peer absolute right-0 z-10 block h-full w-full cursor-pointer appearance-none border-0 border-b-2 border-gray-200 bg-transparent text-sm text-gray-500 opacity-0  focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
+                            <select id="blood_type" onChange={(event) => handleBloodTypeChange(+event.target.value, patient.id ?? 0)} defaultValue={patient.bloodType?.bloodType} className="peer absolute right-0 z-10 block h-full w-full cursor-pointer appearance-none border-0 border-b-2 border-gray-200 bg-transparent text-sm text-gray-500 opacity-0  focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
                                 <option value={-1}>Doesn&apos;t know</option>
+                                {fetchedBloodTypes?.map((bloodType: IBloodType) => <option key={bloodType.id} value={bloodType.id}>{bloodType.bloodType}</option>)}
                             </select>
 
                             <div id="alert-1" className='flex rounded-lg bg-blue-50 text-base font-bold text-blue-800 dark:bg-gray-800 dark:text-blue-400' role="alert">

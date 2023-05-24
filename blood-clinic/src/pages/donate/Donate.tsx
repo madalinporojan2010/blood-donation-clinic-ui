@@ -4,6 +4,7 @@ import Datepicker from 'tailwind-datepicker-react';
 import CharityMessage from '../../components/charity-message/charity-message';
 import MessageBox from '../../components/message-box/message-box';
 import TimePicker from '../../components/time-picker/time-picker';
+import getBloodTypes from '../../shared/services/bloodType/bloodType';
 import getMedicalStaff from '../../shared/services/medical-staff/medicalStaff';
 import { IMedicalStaff } from '../../shared/services/medical-staff/medicalStaff-types';
 import { savePatient } from '../../shared/services/patient/patient';
@@ -14,7 +15,6 @@ import { DEFAULT_MESSAGE, RESPONSE_MESSAGES } from '../../shared/shared-constant
 import { Message } from '../../shared/shared-types';
 import { DATE_PICKER_OPTS, DEFAULT_PATIENT_DATA, ERROR_MESSAGES, INFO_MESSAGES } from './Donate-constants';
 import { FormProps } from './Donate-types';
-import getBloodTypes from './services/bloodType/bloodType';
 
 function Donate() {
     const [patientData, setPatientData] = useState<FormProps>(DEFAULT_PATIENT_DATA);
