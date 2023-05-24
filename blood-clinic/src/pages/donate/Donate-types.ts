@@ -1,16 +1,4 @@
-
-export type BloodType = 'A+' | 'A-' | 'B+' | 'B-' | 'O+' | 'O-' | 'AB+' | 'AB-';
-
-export const BLOOD_TYPES = new Map<BloodType, number> ([
-    ['A-', 1],
-    ['A+', 2],
-    ['B-', 3],
-    ['B+', 4],
-    ['O-', 5],
-    ['O+', 6],
-    ['AB-', 7],
-    ['AB+', 8]
-]);
+import { MessageType } from '../../components/message-box/message-box-types';
 
 export interface FormProps {
     FullName: string;
@@ -22,4 +10,11 @@ export interface FormProps {
     EmergencyContactFullName: string;
     EmergencyContactPhoneNumber: string;
     ScheduleDate: Date;
+    MedicalStaff: number | undefined;
+}
+
+export interface Message {
+    message: string;
+    type: MessageType;
+    show: boolean;
 }

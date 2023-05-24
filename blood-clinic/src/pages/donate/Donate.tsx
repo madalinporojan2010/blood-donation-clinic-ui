@@ -1,23 +1,71 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Datepicker from 'tailwind-datepicker-react';
+import MessageBox from '../../components/message-box/message-box';
 import TimePicker from '../../components/time-picker/time-picker';
-import { DATE_PICKER_OPTS, DEFAULT_PATIENT_DATA } from './Donate-constants';
-import { BLOOD_TYPES, FormProps } from './Donate-types';
-import { IPatient } from './services/patient/patient-types';
-import savePatient from './services/patient/savePatient';
+import { RESPONSE_MESSAGES } from '../../shared/shared-constants';
+import { DATE_PICKER_OPTS, DEFAULT_MESSAGE, DEFAULT_PATIENT_DATA, ERROR_MESSAGES, INFO_MESSAGES } from './Donate-constants';
+import { FormProps, Message } from './Donate-types';
+import getBloodTypes from './services/bloodType/bloodType';
+import { IMedicalStaff } from './services/medical-staff/medical-staff-types';
+import getMedicalStaff from './services/medical-staff/medicalStaff';
+import savePatient from './services/patient/patient';
+import { IBloodType, IPatient } from './services/patient/patient-types';
+import saveSchedule from './services/schedule/schedule';
+import { ISchedule } from './services/schedule/schedule-types';
 
 function Donate() {
     const [patientData, setPatientData] = useState<FormProps>(DEFAULT_PATIENT_DATA);
+    const [fetchedMedicalStaffs, setFetchedMedicalStaffs] = useState<IMedicalStaff[]>();
+    const [fetchedBloodTypes, setFetchedBloodTypes] = useState<IBloodType[]>();
+
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
+    const [message, setMessage] = useState<Message>(DEFAULT_MESSAGE);
+    
     const [showCharityMessage, setShowCharityMessage] = useState<boolean>(false);
 
-    const schedule = () => {
-        // eslint-disable-next-line no-console
-        console.log(patientData);
-        setShowCharityMessage(true);
+    useEffect(() => {
+        getMedicalStaff((medicalStaffs: IMedicalStaff[] | null) => {
+            if(medicalStaffs !== null) {
+                setFetchedMedicalStaffs(medicalStaffs);
+            } else {
+                setMessage({
+                    message: ERROR_MESSAGES.FETCH_MEDICAL_DATA,
+                    type: 'error',
+                    show: true
+                });
+            }
+        });
+        
+        getBloodTypes((bloodTypes: IBloodType[] | null) => {
+            if(bloodTypes !== null) {
+                setFetchedBloodTypes(bloodTypes);
+            } else {
+                setMessage({
+                    message: ERROR_MESSAGES.FETCH_BLOOD_TYPE_DATA,
+                    type: 'error',
+                    show: true
+                });
+            }
+        });
+    }, []);
 
+    const closeMessage = () => {
+        const newMessage = {...message};
+        newMessage.show = false;
+        setMessage(newMessage);
+    };
+
+    const renderInfoMessageComponent = () => {
+        if(message.show) {
+            const newMessage = {...message};
+            newMessage.show = false;
+            return (<MessageBox message={message.message} messageType={message.type} onClose={()=>{closeMessage();}}></MessageBox>);
+        }
+    };
+
+    const schedule = () => {
         savePatient({
             name: patientData.FullName,
             age: patientData.Age,
@@ -27,9 +75,38 @@ function Donate() {
             contactPersonName: patientData.EmergencyContactFullName,
             contactPersonPhone: patientData.EmergencyContactPhoneNumber,
             bloodType: patientData.BloodType !== undefined ? {id: patientData.BloodType} : null
-        // eslint-disable-next-line no-console
-        } as IPatient, (savedPatient)=> {console.log(savedPatient);});
+        } as IPatient, (savedPatient) => {
+            if(savedPatient !== null) {
+                saveSchedule({
+                    patient: {id: savedPatient?.id},
+                    medicalStaff: {id: patientData.MedicalStaff},
+                    arrivalTime: patientData.ScheduleDate
+                } as ISchedule, (message: string | null) => {                    
+                    if(message === null || !message.includes(RESPONSE_MESSAGES.SUCCESS)) {
+                        setMessage({
+                            message: ERROR_MESSAGES.SAVE_SCHEDULE,
+                            type: 'error',
+                            show: true
+                        });
+                    } else {
+                        setMessage({
+                            message: INFO_MESSAGES.saveSchedule(patientData.ScheduleDate),
+                            type: 'success',
+                            show: true
+                        });
+                        setShowCharityMessage(true);
+                    }
+                });
+            } else {
+                setMessage({
+                    message: INFO_MESSAGES.saveSchedule(patientData.ScheduleDate),
+                    type: 'success',
+                    show: true
+                });
+            }
+        });
     };
+    
     const handleClose = (state: boolean) => {
         setShowDatePicker(state);
     };
@@ -64,6 +141,16 @@ function Donate() {
             newData.BloodType = +bloodType;
         } else {
             newData.BloodType = undefined;
+        }
+        setPatientData(newData);
+    };
+
+    const handleMedicalStaffChange = (medicalStaff: number) => {
+        const newData: FormProps = {...patientData};
+        if(medicalStaff > 0) {
+            newData.MedicalStaff = +medicalStaff;
+        } else {
+            newData.MedicalStaff = undefined;
         }
         setPatientData(newData);
     };
@@ -145,7 +232,7 @@ function Donate() {
                                 <select id="blood_type" defaultValue="Choose your Blood Type" onChange={(event) => handleBloodTypeChange(+event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
                                     <option value={-1}>Choose your Blood Type</option>
                                     <option value={-2}>Don&apos;t know</option>
-                                    {Array.from(BLOOD_TYPES).map(([key, value]) => (<option key={value} value={value}>{key}</option>))}
+                                    {fetchedBloodTypes?.map((bloodType: IBloodType) => (<option key={bloodType.id} value={bloodType.id}>{bloodType.bloodType}</option>))}
                                 </select>
                                 <label htmlFor="blood_type" className="sr-only">Underline select</label>
                             </div>
@@ -157,7 +244,7 @@ function Donate() {
                         <label htmlFor="floating_address" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Full Address</label>
                     </div>
 
-                    <div className="grid md:grid-cols-2 md:gap-6">
+                    <div className="grid md:grid-cols-3 md:gap-6">
                         <div className="group relative z-0 mb-6 w-full">
                             <input type="text" name="floating_contact_full_name" id="floating_contact_full_name" onChange={(event) => handleEmergencyFullName(event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
                             <label htmlFor="floating_contact_full_name" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Emergency Contact Full Name</label>
@@ -165,6 +252,16 @@ function Donate() {
                         <div className="group relative z-0 mb-6 w-full">
                             <input type="tel" pattern="[0-9]{10}" name="floating_contact_phone" id="floating_contact_phone" onChange={(event) => handleEmergencyPhoneNumber(event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
                             <label htmlFor="floating_contact_phone" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500">Emergency Contact Phone number</label>
+                        </div>
+                        
+                        <div>
+                            <div className="group relative z-0 mb-6 w-full">
+                                <select id="medical_staff" defaultValue="Choose your Doctor" onChange={(event) => handleMedicalStaffChange(+event.target.value)} className="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
+                                    <option value={-1}>Choose your Doctor</option>
+                                    {fetchedMedicalStaffs?.map((medicalStaff: IMedicalStaff) => (<option key={medicalStaff.id} value={medicalStaff.id}>Dr. {medicalStaff.name}, Specialization: {medicalStaff.specialization}</option>))}
+                                </select>
+                                <label htmlFor="medical_staff" className="sr-only">Underline select</label>
+                            </div>
                         </div>
                     </div>
 
@@ -176,6 +273,11 @@ function Donate() {
                             <TimePicker onChange={handleTimeChange}></TimePicker>
                         </div>
                     </div>
+
+                    <div className='flex justify-center md:justify-start'>
+                        {renderInfoMessageComponent()}
+                    </div>
+
                     <button type="submit" className="mt-5 w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Schedule</button>
                 </form>
             </div>

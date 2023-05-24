@@ -1,6 +1,7 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { FormProps } from './Donate-types';
+import { format } from 'date-fns';
+import { FormProps, Message } from './Donate-types';
 
 const today = new Date();
 const tomorrow = new Date();
@@ -45,5 +46,25 @@ export const DEFAULT_PATIENT_DATA: FormProps = {
     FullAddress: '',
     EmergencyContactFullName: '',
     EmergencyContactPhoneNumber: '',
-    ScheduleDate: tomorrow
+    ScheduleDate: tomorrow,
+    MedicalStaff: undefined
+};
+
+
+export const DEFAULT_MESSAGE: Message = {
+    message: '',
+    type: 'info',
+    show: false
+};
+
+export const ERROR_MESSAGES = {
+    FETCH_MEDICAL_DATA: 'There was an unexpected error when fetching the medical staff data. Please come back another time!',
+    FETCH_BLOOD_TYPE_DATA: 'There was an unexpected error when fetching the blood type data. Please come back another time!',
+    SAVE_SCHEDULE: 'There was an unexpected error when saving your schedule. Please try again!'
+};
+
+export const INFO_MESSAGES = {
+    saveSchedule(time: Date) {
+        return `Your schedule for ${format(time, 'dd LLL yyyy hh:mm')} was processed. Thank you!`;
+    }
 };
