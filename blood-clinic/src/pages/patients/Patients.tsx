@@ -1,6 +1,8 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import useIsMobile from '../../hooks/is-mobile/is-mobile-hook';
+import getBloodBanks from '../../shared/services/bloodBank/bloodBank';
+import { IBloodBank } from '../../shared/services/bloodBank/bloodBank-types';
 import getBloodTypes from '../../shared/services/bloodType/bloodType';
 import { IBloodType } from '../../shared/services/bloodType/bloodTypes-types';
 import { getPatients, updatePatient } from '../../shared/services/patient/patient';
@@ -16,6 +18,7 @@ export default function Patients() {
     const [fetchedPatients, setFetchedPatients] = useState<IPatient[]>();
     const [fetchedSchedules, setFetchedSchedules] = useState<ISchedule[]>();
     const [fetchedBloodTypes, setFetchedBloodTypes] = useState<IBloodType[]>();
+    const [fetchedBloodBanks, setFetchedBloodBanks] = useState<IBloodBank[]>();
     
     const [cellPadding, setCellPadding] = useState<string>(CELL_PADDING);
 
@@ -37,6 +40,11 @@ export default function Patients() {
         getBloodTypes((bloodTypes: IBloodType[] | null) => {
             if(bloodTypes) {
                 setFetchedBloodTypes(bloodTypes);
+            }
+        });
+        getBloodBanks((bloodBanks: IBloodBank[] | null) => {
+            if(bloodBanks) {
+                setFetchedBloodBanks(bloodBanks);
             }
         });
     }, []);
@@ -110,7 +118,7 @@ export default function Patients() {
 
                             <select id="blood_type" onChange={(event) => handleBloodTypeChange(+event.target.value, patient.id ?? 0)} defaultValue={patient.bloodType?.bloodType} className="peer absolute right-0 z-10 block h-full w-full cursor-pointer appearance-none border-0 border-b-2 border-gray-200 bg-transparent text-sm text-gray-500 opacity-0  focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400">
                                 <option value={-1}>Doesn&apos;t know</option>
-                                {fetchedBloodTypes?.map((bloodType: IBloodType) => <option key={bloodType.id} value={bloodType.id}>{bloodType.bloodType}</option>)}
+                                {fetchedBloodTypes?.map((bloodType: IBloodType) => <option key={bloodType.id} value={bloodType.id}>{`${bloodType.bloodType} Actual Quantity: ${fetchedBloodBanks?.find((bloodBank: IBloodBank) => bloodBank.bloodType.id === bloodType.id)?.quantity}`}</option>)}
                             </select>
 
                             <div id="alert-1" className='flex rounded-lg bg-blue-50 text-base font-bold text-blue-800 dark:bg-gray-800 dark:text-blue-400' role="alert">

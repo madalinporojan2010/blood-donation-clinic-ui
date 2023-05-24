@@ -10,7 +10,8 @@ export const ENDPOINTS = {
     SCHEDULE_ENDPOINT: 'schedule',
     MEDICAL_STAFF_ENDPOINT: 'medicalStaff',
     BLOODTYPE_ENDPOINT: 'bloodType',
-    DONATION_ENDPOINT: 'donation'
+    DONATION_ENDPOINT: 'donation',
+    BLOODBANK_ENDPOINT: 'bloodBank'
 };
 
 export const RESPONSE_MESSAGES = {
