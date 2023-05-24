@@ -5,6 +5,10 @@ export const ERROR_MESSAGES = {
     SIGN_IN: 'There was an unexpected error when signin in. Please come back another time!'
 };
 
+export const INFO_MESSAGES = {
+    SIGN_IN: 'You must provide valid credentials. Please try again or contact the administrator!'
+};
+
 export const DEFAULT_SIGNIN_DATA: FormProps = {
     idNumber: '',
     password: ''
