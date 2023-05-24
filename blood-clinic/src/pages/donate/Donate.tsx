@@ -190,7 +190,7 @@ function Donate() {
 
     return (
         <section>
-            <div className="mx-auto max-w-screen-md px-4 pt-8 lg:py-16">
+            <div className="mx-auto max-w-screen-md px-4 pb-5 pt-8">
                 <h2 className="text-center text-4xl text-gray-900 dark:text-white">
                     <span className="bg-gradient-to-r from-red-600 to-blue-800 bg-clip-text font-medium tracking-tighter text-transparent"> 
                         <span className="font-medium"> 
